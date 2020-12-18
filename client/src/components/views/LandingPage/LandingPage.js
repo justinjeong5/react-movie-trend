@@ -6,7 +6,7 @@ import { LOAD_MOVIES_REQUEST } from '../../../_sagas/types';
 import LoadingPage from '../LoadingPage/LoadingPage'
 import { IMAGE_URL } from '../../../Config'
 import { v4 as uuidv4 } from 'uuid'
-import MainImage from './Sections/MainImage';
+import MainImage from '../../utils/MainImage/MainImage';
 const { Title } = Typography
 
 function LandingPage(props) {
@@ -64,7 +64,7 @@ function LandingPage(props) {
     <>
       {loadMoviesLoading && <LoadingPage />}
       {loadMoviesDone && <>
-        <MainImage />
+        <MainImage movie={movieData[0]} />
         <Divider />
         <div style={{ width: '85%', margin: '1rem auto' }}>
           <Title level={2} >오늘의 영화</Title>

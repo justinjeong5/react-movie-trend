@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { LOAD_MOVIE_DETAIL_REQUEST } from '../../../_sagas/types'
+import MainImage from '../../utils/MainImage/MainImage'
 
 function MovieDetailPage(props) {
 
   const dispatch = useDispatch();
-  const { currentMovie } = useSelector(state => state.movie)
+  const { currentMovie, loadMovieDetailDone } = useSelector(state => state.movie)
 
   useEffect(() => {
     dispatch({
@@ -17,6 +18,7 @@ function MovieDetailPage(props) {
 
   return (
     <div>
+      {loadMovieDetailDone && <MainImage movie={currentMovie} />}
       movieId : {props.match.params.movieId}
       MovieDetailPage
       {currentMovie && console.log(currentMovie, 'currentMovie')}
