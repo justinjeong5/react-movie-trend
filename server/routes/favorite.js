@@ -52,7 +52,7 @@ router.post('/isFavorited', auth, (req, res) => {
       if (error) {
         return res.status(401).json({ code: 'DatabaseError', message: '좋아요를 변경하는 과정에서 문제가 발생했습니다.', error });
       }
-      return res.status(200).json({ success: true, isFavorited: favorite.length })
+      return res.status(200).json({ success: true, isFavorited: favorite.length > 0 })
     })
 })
 
