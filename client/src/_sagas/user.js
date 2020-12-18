@@ -1,5 +1,6 @@
 import { all, fork, put, call, takeLatest } from 'redux-saga/effects'
 import axios from 'axios';
+import { BACKEND_URL } from '../Config'
 
 import {
   LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE,
@@ -9,7 +10,7 @@ import {
 } from './types'
 
 function logInAPI(data) {
-  return axios.post('/api/user/login', data)
+  return axios.post(`${BACKEND_URL}/api/user/login`, data, { withCredentials: true })
 }
 
 function* logIn(action) {
@@ -29,7 +30,7 @@ function* logIn(action) {
 }
 
 function registerAPI(data) {
-  return axios.post('/api/user/register', data)
+  return axios.post(`${BACKEND_URL}/api/user/register`, data, { withCredentials: true })
 }
 
 function* register(action) {
@@ -49,7 +50,7 @@ function* register(action) {
 }
 
 function logoutAPI() {
-  return axios.get('/api/user/logout')
+  return axios.get(`${BACKEND_URL}/api/user/logout`, { withCredentials: true })
 }
 
 function* logout() {
@@ -68,12 +69,13 @@ function* logout() {
 }
 
 function authAPI() {
-  return axios.get('/api/user/auth')
+  return axios.get(`${BACKEND_URL}/api/user/auth`, { withCredentials: true })
 }
 
 function* auth() {
   try {
     const result = yield call(authAPI);
+    console.log(result, 'result authAPI')
     yield put({
       type: AUTHENTICATE_USER_SUCCESS,
       payload: result.data,
