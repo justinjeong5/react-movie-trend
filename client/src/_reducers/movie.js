@@ -1,11 +1,15 @@
 import {
   LOAD_MOVIES_REQUEST, LOAD_MOVIES_SUCCESS, LOAD_MOVIES_FAILURE,
+  LOAD_MOVIE_DETAIL_REQUEST, LOAD_MOVIE_DETAIL_SUCCESS, LOAD_MOVIE_DETAIL_FAILURE,
 } from '../_sagas/types'
 
 const initialState = {
   loadMoviesLoading: false,
   loadMoviesDone: false,
   loadMoviesError: null,
+  loadMovieDetailLoading: false,
+  loadMovieDetailDone: false,
+  loadMovieDetailError: null,
 
   pageNumber: 1,
   movieData: [],
@@ -33,6 +37,26 @@ const movie = (state = initialState, action) => {
         ...state,
         loadMoviesLoading: false,
         loadMoviesError: action.error
+      }
+    case LOAD_MOVIE_DETAIL_REQUEST:
+      return {
+        ...state,
+        loadMovieDetailLoading: true,
+        loadMovieDetailDone: false,
+        loadMovieDetailError: null,
+      }
+    case LOAD_MOVIE_DETAIL_SUCCESS:
+      return {
+        ...state,
+        loadMovieDetailLoading: false,
+        loadMovieDetailDone: true,
+        currentMovie: action.payload,
+      }
+    case LOAD_MOVIE_DETAIL_FAILURE:
+      return {
+        ...state,
+        loadMovieDetailLoading: false,
+        loadMovieDetailError: action.error
       }
     default:
       return {
