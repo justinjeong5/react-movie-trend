@@ -6,6 +6,7 @@ import {
   LOAD_MOVIES_REQUEST, LOAD_MOVIES_SUCCESS, LOAD_MOVIES_FAILURE,
   LOAD_MOVIE_DETAIL_REQUEST, LOAD_MOVIE_DETAIL_SUCCESS, LOAD_MOVIE_DETAIL_FAILURE,
   LOAD_MOVIE_TRAILER_REQUEST, LOAD_MOVIE_TRAILER_SUCCESS, LOAD_MOVIE_TRAILER_FAILURE,
+  LOAD_MOVIE_CASTING_REQUEST, LOAD_MOVIE_CASTING_SUCCESS, LOAD_MOVIE_CASTING_FAILURE,
 } from './types'
 
 function LoadMoviesAPI(data) {
@@ -68,6 +69,26 @@ function* loadMovieTrailer(action) {
   }
 }
 
+function LoadMovieCastingAPI(data) {
+  return axios.get(`${API_URL}/movie/${data}/credits?api_key=${API_KEY}`)
+}
+
+function* loadMovieCasting(action) {
+  try {
+    const result = yield call(LoadMovieCastingAPI, action.payload);
+    yield put({
+      type: LOAD_MOVIE_CASTING_SUCCESS,
+      payload: result.data,
+    })
+  } catch (error) {
+    console.error(error)
+    yield put({
+      type: LOAD_MOVIE_CASTING_FAILURE,
+      error: error.response.data,
+    })
+  }
+}
+
 function* watchLoadMovies() {
   yield takeLatest(LOAD_MOVIES_REQUEST, loadMovies)
 }
@@ -80,11 +101,15 @@ function* watchLoadMovieTrailer() {
   yield takeLatest(LOAD_MOVIE_TRAILER_REQUEST, loadMovieTrailer)
 }
 
+function* watchLoadMovieCasting() {
+  yield takeLatest(LOAD_MOVIE_CASTING_REQUEST, loadMovieCasting)
+}
+
 export default function* movieSaga() {
   yield all([
     fork(watchLoadMovies),
     fork(watchLoadMovieDetail),
     fork(watchLoadMovieTrailer),
-
+    fork(watchLoadMovieCasting),
   ])
 }

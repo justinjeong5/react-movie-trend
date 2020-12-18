@@ -7,6 +7,7 @@ import { LOAD_MOVIE_DETAIL_REQUEST, LOAD_MOVIE_TRAILER_REQUEST } from '../../../
 import MainImage from '../../utils/MainImage/MainImage'
 import LoadingPage from '../LoadingPage/LoadingPage'
 import MovieDescription from './Sections/MovieDescription'
+import MovieCasting from './Sections/MovieCasting'
 
 const { TabPane } = Tabs;
 
@@ -51,10 +52,12 @@ function MovieDetailPage(props) {
               <Divider />
               <Tabs defaultActiveKey="1">
                 <TabPane tab="트레일러" key="1"  >
+                  <br />
                   <Youtube videoId={currentMovie.trailer?.key} />
                 </TabPane>
                 <TabPane tab="배우" key="2" >
-
+                  <br />
+                  <MovieCasting />
                 </TabPane>
                 <TabPane tab="제작사" key="3"  >
 
@@ -67,8 +70,6 @@ function MovieDetailPage(props) {
           </PageHeader>
         </div>
       </>}
-
-
     </div>
   )
 }
