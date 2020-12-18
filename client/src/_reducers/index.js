@@ -3,6 +3,7 @@ import { combineReducers } from 'redux'
 
 import user from './user'
 import movie from './movie'
+import favorite from './favorite'
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -12,6 +13,7 @@ const rootReducer = (state, action) => {
       const combineReducer = combineReducers({
         user,
         movie,
+        favorite,
       })
       return combineReducer(state, action);
   }

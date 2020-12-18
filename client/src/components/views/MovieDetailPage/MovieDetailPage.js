@@ -9,6 +9,8 @@ import LoadingPage from '../LoadingPage/LoadingPage'
 import MovieDescription from './Sections/MovieDescription'
 import MovieCasting from './Sections/MovieCasting'
 import MovieMaker from './Sections/MovieMaker'
+import MovieReview from './Sections/MovieReview'
+import MovieFavorite from './Sections/MovieFavorite'
 
 const { TabPane } = Tabs;
 
@@ -45,14 +47,12 @@ function MovieDetailPage(props) {
             title={currentMovie.title}
             subTitle={currentMovie.original_title}
             extra={[
-              <Button key="3">Operation</Button>,
-              <Button key="2">Operation</Button>,
-              <Button key="1" type="primary">Primary</Button>,
+              <MovieFavorite />,
             ]}
             footer={<>
               <Divider />
-              <Tabs defaultActiveKey="1">
-                <TabPane tab="트레일러" key="1"  >
+              <Tabs defaultActiveKey="1" style={{ marginBottom: 50 }}>
+                <TabPane tab="트레일러" key="1" >
                   <br />
                   <Youtube videoId={currentMovie.trailer?.key} />
                 </TabPane>
@@ -60,7 +60,12 @@ function MovieDetailPage(props) {
                   <br />
                   <MovieCasting />
                 </TabPane>
-                <TabPane tab="제작사" key="3"  >
+                <TabPane tab="후기 및 평점" key="3"  >
+                  <br />
+                  <MovieReview />
+                </TabPane>
+                <TabPane tab="제작사" key="4" >
+                  <br />
                   <MovieMaker />
                 </TabPane>
               </Tabs>
