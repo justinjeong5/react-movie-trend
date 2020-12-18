@@ -1,6 +1,7 @@
 import {
   LOAD_FAVORITE_NUMBER_REQUEST, LOAD_FAVORITE_NUMBER_SUCCESS, LOAD_FAVORITE_NUMBER_FAILURE,
   CHANGE_FAVORITE_REQUEST, CHANGE_FAVORITE_SUCCESS, CHANGE_FAVORITE_FAILURE,
+  LOAD_IS_FAVORITED_REQUEST, LOAD_IS_FAVORITED_SUCCESS, LOAD_IS_FAVORITED_FAILURE,
 } from '../_sagas/types'
 
 const initialState = {
@@ -10,6 +11,9 @@ const initialState = {
   changeFavoriteLoading: false,
   changeFavoriteDone: false,
   changeFavoriteError: null,
+  loadIsFavoritedLoading: false,
+  loadIsFavoritedDone: false,
+  loadIsFavoritedError: null,
 
   favorite: {
     favoriteNumber: 0,
@@ -64,6 +68,29 @@ const favorite = (state = initialState, action) => {
         ...state,
         changeFavoriteLoading: false,
         changeFavoriteError: action.error
+      }
+    case LOAD_IS_FAVORITED_REQUEST:
+      return {
+        ...state,
+        loadIsFavoritedLoading: true,
+        loadIsFavoritedDone: false,
+        loadIsFavoritedError: null,
+      }
+    case LOAD_IS_FAVORITED_SUCCESS:
+      return {
+        ...state,
+        loadIsFavoritedLoading: false,
+        loadIsFavoritedDone: true,
+        favorite: {
+          ...state.favorite,
+          isFavorited: action.payload.isFavorited,
+        },
+      }
+    case LOAD_IS_FAVORITED_FAILURE:
+      return {
+        ...state,
+        loadIsFavoritedLoading: false,
+        loadIsFavoritedError: action.error
       }
     default:
       return {
