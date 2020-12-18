@@ -23,6 +23,7 @@ mongoose.connect(config.mongoURI, {
 })
 
 app.use('/api/user', require('./routes/user'));
+app.use('/api/favorite', require('./routes/favorite'));
 
 
 app.get('/', (req, res) => {
