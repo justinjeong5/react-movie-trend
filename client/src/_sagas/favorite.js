@@ -4,6 +4,7 @@ import { BACKEND_URL } from '../Config'
 
 import {
   LOAD_FAVORITE_NUMBER_REQUEST, LOAD_FAVORITE_NUMBER_SUCCESS, LOAD_FAVORITE_NUMBER_FAILURE,
+  CHANGE_FAVORITE_REQUEST, CHANGE_FAVORITE_SUCCESS, CHANGE_FAVORITE_FAILURE,
 } from './types'
 
 function LoadFavoriteNumberAPI(data) {
@@ -26,12 +27,37 @@ function* loadFavoriteNumber(action) {
   }
 }
 
+function changeFavoriteAPI(data) {
+  return axios.post(`${BACKEND_URL}/api/favorite/changeFavorited`, data, { withCredentials: true })
+}
+
+function* changeFavorite(action) { 
+  try {
+    const result = yield call(changeFavoriteAPI, action.payload);
+    yield put({
+      type: CHANGE_FAVORITE_SUCCESS,
+      payload: result.data,
+    })
+  } catch (error) {
+    console.error(error)
+    yield put({
+      type: CHANGE_FAVORITE_FAILURE,
+      error: error.response.data,
+    })
+  }
+}
+
 function* watchLoadFavoriteNumber() {
   yield takeLatest(LOAD_FAVORITE_NUMBER_REQUEST, loadFavoriteNumber)
+}
+
+function* watchChangeFavorite() {
+  yield takeLatest(CHANGE_FAVORITE_REQUEST, changeFavorite)
 }
 
 export default function* favoriteSaga() {
   yield all([
     fork(watchLoadFavoriteNumber),
+    fork(watchChangeFavorite),
   ])
 }

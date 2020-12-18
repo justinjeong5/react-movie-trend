@@ -2,17 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { Tag } from 'antd'
 import { HeartTwoTone, HeartOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { LOAD_FAVORITE_NUMBER_REQUEST } from '../../../../_sagas/types';
+import { LOAD_FAVORITE_NUMBER_REQUEST, CHANGE_FAVORITE_REQUEST } from '../../../../_sagas/types';
 
 function MovieFavorite() {
 
   const dispatch = useDispatch();
-  const [isFavorite, setIsFavorite] = useState(false)
   const { favorite, loadFavoriteNumberLoading, loadFavoriteNumberDone } = useSelector(state => state.favorite)
   const { currentMovie } = useSelector(state => state.movie)
+  const { currentUser } = useSelector(state => state.user)
 
   const handleFavorite = () => {
-    setIsFavorite(prev => !prev)
+    dispatch({
+      type: CHANGE_FAVORITE_REQUEST,
+      payload: {
+        userFrom: currentUser._id,
+        movieId: currentMovie.id,
+      }
+    })
   }
 
   useEffect(() => {
@@ -22,16 +28,19 @@ function MovieFavorite() {
         movieId: currentMovie.id
       }
     })
-  }, [])
+  }, [favorite.isFavorited])
 
   return (
     <div>
       {loadFavoriteNumberLoading && <LoadingOutlined />}
       {loadFavoriteNumberDone &&
-        (isFavorite
-          ? <Tag icon={<HeartTwoTone twoToneColor="#eb2f96" onClick={handleFavorite} />}>{favorite.favoriteNumber}</Tag>
-          : <Tag icon={<HeartOutlined onClick={handleFavorite} />}>{favorite.favoriteNumber}</Tag>
-        )
+        <Tag icon={
+          (favorite.isFavorited
+            ? <HeartTwoTone twoToneColor="#eb2f96" onClick={handleFavorite} />
+            : <HeartOutlined onClick={handleFavorite} />)
+        }>
+          {favorite.favoriteNumber}
+        </Tag>
       }
     </div >
   )
