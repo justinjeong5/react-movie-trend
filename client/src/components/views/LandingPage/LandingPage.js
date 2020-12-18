@@ -28,6 +28,23 @@ function LandingPage(props) {
     })
   }, [])
 
+  useEffect(() => {
+    function onScroll() {
+      if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+        if (!loadMoviesLoading && pageNumber < 100) {
+          dispatch({
+            type: LOAD_MOVIES_REQUEST,
+            payload: pageNumber,
+          });
+        }
+      }
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
   const renderMovieCard = movieData?.map((movie) => {
     return (
       <Col lg={6} md={8} sm={12} xs={24} key={uuidv4()}>

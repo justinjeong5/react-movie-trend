@@ -25,7 +25,7 @@ const movie = (state = initialState, action) => {
         ...state,
         loadMoviesLoading: false,
         loadMoviesDone: true,
-        movieData: action.payload.results,
+        movieData: [...state.movieData, ...action.payload.results],
         pageNumber: state.pageNumber + 1,
       }
     case LOAD_MOVIES_FAILURE:
