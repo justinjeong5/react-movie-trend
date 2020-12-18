@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Typography, Row, Col, Card, Divider } from 'antd'
 import { LOAD_MOVIES_REQUEST } from '../../../_sagas/types';
 import LoadingPage from '../LoadingPage/LoadingPage'
@@ -52,7 +52,9 @@ function LandingPage(props) {
           hoverable
           cover={<img alt="example" src={`${IMAGE_URL}/w500${movie.poster_path}`} />}
         >
-          <Card.Meta title={movie.title} description={movie.overview ? `${movie.overview.slice(0, 30)}...` : '(내용 요약 없음)'} />
+          <Link to={`/movie/${movie.id}`}>
+            <Card.Meta title={movie.title} description={movie.overview ? `${movie.overview.slice(0, 30)}...` : '(내용 요약 없음)'} />
+          </Link>
         </Card>
       </Col >
     )
