@@ -43,11 +43,11 @@ function LandingPage(props) {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, []);
+  }, [loadMoviesLoading, pageNumber]);
 
   const renderMovieCard = movieData?.map((movie) => {
     return (
-      <Col lg={6} md={8} sm={12} xs={24} key={uuidv4()}>
+      <Col xl={4} lg={6} md={8} sm={12} xs={24} key={uuidv4()}>
         <Card
           hoverable
           cover={<img alt="example" src={`${IMAGE_URL}/w500${movie.poster_path}`} />}
