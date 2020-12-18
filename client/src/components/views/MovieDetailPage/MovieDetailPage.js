@@ -8,13 +8,14 @@ import MainImage from '../../utils/MainImage/MainImage'
 import LoadingPage from '../LoadingPage/LoadingPage'
 import MovieDescription from './Sections/MovieDescription'
 import MovieCasting from './Sections/MovieCasting'
+import MovieMaker from './Sections/MovieMaker'
 
 const { TabPane } = Tabs;
 
 function MovieDetailPage(props) {
 
   const dispatch = useDispatch();
-  const { currentMovie, loadMovieDetailDone, loadMovieDetailLoading, loadMovieTrailerDone, loadMovieTrailerLoading } = useSelector(state => state.movie)
+  const { currentMovie, loadMovieDetailDone, loadMovieTrailerDone, loadMovieTrailerLoading } = useSelector(state => state.movie)
 
   useEffect(() => {
     dispatch({
@@ -60,7 +61,7 @@ function MovieDetailPage(props) {
                   <MovieCasting />
                 </TabPane>
                 <TabPane tab="제작사" key="3"  >
-
+                  <MovieMaker />
                 </TabPane>
               </Tabs>
             </>}
