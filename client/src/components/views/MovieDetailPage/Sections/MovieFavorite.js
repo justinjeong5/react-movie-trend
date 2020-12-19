@@ -7,7 +7,7 @@ import { LOAD_FAVORITE_NUMBER_REQUEST, CHANGE_FAVORITE_REQUEST, LOAD_IS_FAVORITE
 function MovieFavorite() {
 
   const dispatch = useDispatch();
-  const { favorite, loadFavoriteNumberLoading, loadFavoriteNumberDone, loadIsFavoritedDone } = useSelector(state => state.favorite)
+  const { isFavorited, favoriteNumber, loadFavoriteNumberLoading, loadFavoriteNumberDone, loadIsFavoritedDone } = useSelector(state => state.favorite)
   const { currentMovie } = useSelector(state => state.movie)
   const { currentUser } = useSelector(state => state.user)
 
@@ -32,7 +32,7 @@ function MovieFavorite() {
         }
       })
     }
-  }, [currentMovie, favorite.isFavorited])
+  }, [currentMovie, isFavorited])
 
   const handleFavorite = () => {
     dispatch({
@@ -49,11 +49,11 @@ function MovieFavorite() {
       {loadFavoriteNumberLoading && <LoadingOutlined />}
       {loadFavoriteNumberDone &&
         <Tag icon={loadIsFavoritedDone &&
-          (favorite.isFavorited
+          (isFavorited
             ? <HeartTwoTone twoToneColor="#eb2f96" onClick={handleFavorite} />
             : <HeartOutlined onClick={handleFavorite} />)
         }>
-          {favorite.favoriteNumber}
+          {favoriteNumber}
         </Tag>
       }
     </div >

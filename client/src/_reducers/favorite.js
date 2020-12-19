@@ -2,6 +2,7 @@ import {
   LOAD_FAVORITE_NUMBER_REQUEST, LOAD_FAVORITE_NUMBER_SUCCESS, LOAD_FAVORITE_NUMBER_FAILURE,
   CHANGE_FAVORITE_REQUEST, CHANGE_FAVORITE_SUCCESS, CHANGE_FAVORITE_FAILURE,
   LOAD_IS_FAVORITED_REQUEST, LOAD_IS_FAVORITED_SUCCESS, LOAD_IS_FAVORITED_FAILURE,
+  LOAD_FAVORITED_LIST_REQUEST, LOAD_FAVORITED_LIST_SUCCESS, LOAD_FAVORITED_LIST_FAILURE,
 } from '../_sagas/types'
 
 const initialState = {
@@ -14,11 +15,12 @@ const initialState = {
   loadIsFavoritedLoading: false,
   loadIsFavoritedDone: false,
   loadIsFavoritedError: null,
+  loadFavoritedListLoading: false,
+  loadFavoritedListDone: false,
+  loadFavoritedListError: null,
 
-  favorite: {
-    favoriteNumber: 0,
-    isFavorited: false,
-  },
+  favoriteNumber: 0,
+  isFavorited: false,
 }
 
 const favorite = (state = initialState, action) => {
@@ -35,10 +37,7 @@ const favorite = (state = initialState, action) => {
         ...state,
         loadFavoriteNumberLoading: false,
         loadFavoriteNumberDone: true,
-        favorite: {
-          ...state.favorite,
-          favoriteNumber: action.payload.favoriteNumber,
-        },
+        favoriteNumber: action.payload.favoriteNumber,
       }
     case LOAD_FAVORITE_NUMBER_FAILURE:
       return {
@@ -58,10 +57,7 @@ const favorite = (state = initialState, action) => {
         ...state,
         changeFavoriteLoading: false,
         changeFavoriteDone: true,
-        favorite: {
-          ...state.favorite,
-          isFavorited: action.payload.isFavorited,
-        },
+        isFavorited: action.payload.isFavorited,
       }
     case CHANGE_FAVORITE_FAILURE:
       return {
@@ -81,16 +77,33 @@ const favorite = (state = initialState, action) => {
         ...state,
         loadIsFavoritedLoading: false,
         loadIsFavoritedDone: true,
-        favorite: {
-          ...state.favorite,
-          isFavorited: action.payload.isFavorited,
-        },
+        isFavorited: action.payload.isFavorited,
       }
     case LOAD_IS_FAVORITED_FAILURE:
       return {
         ...state,
         loadIsFavoritedLoading: false,
         loadIsFavoritedError: action.error
+      }
+    case LOAD_FAVORITED_LIST_REQUEST:
+      return {
+        ...state,
+        loadFavoritedListLoading: true,
+        loadFavoritedListDone: false,
+        loadFavoritedListError: null,
+      }
+    case LOAD_FAVORITED_LIST_SUCCESS:
+      return {
+        ...state,
+        loadFavoritedListLoading: false,
+        loadFavoritedListDone: true,
+        favoritedList: action.payload.favoritedList,
+      }
+    case LOAD_FAVORITED_LIST_FAILURE:
+      return {
+        ...state,
+        loadFavoritedListLoading: false,
+        loadFavoritedListError: action.error
       }
     default:
       return {
