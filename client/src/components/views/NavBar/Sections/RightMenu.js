@@ -3,7 +3,7 @@ import { Menu } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { LOGOUT_USER_REQUEST } from '../../../../_sagas/types';
-import { LoginOutlined, LogoutOutlined, UserAddOutlined } from '@ant-design/icons'
+import { LoginOutlined, LogoutOutlined, UserAddOutlined, HeartOutlined } from '@ant-design/icons'
 
 function RightMenu(props) {
   const { currentUser, logoutUserDone } = useSelector(state => state.user)
@@ -24,8 +24,11 @@ function RightMenu(props) {
   if (currentUser && currentUser.isAuth) {
     return (
       <Menu mode={props.mode}>
+        <Menu.Item key="favorite">
+          <Link to="/favorite"><HeartOutlined /></Link>
+        </Menu.Item>
         <Menu.Item key="logout">
-          <span onClick={logoutHandler}><LogoutOutlined /></span>
+          <Link to='#' onClick={logoutHandler}><LogoutOutlined /></Link>
         </Menu.Item>
       </Menu>
     )

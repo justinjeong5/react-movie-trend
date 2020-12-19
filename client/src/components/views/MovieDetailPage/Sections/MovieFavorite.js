@@ -40,6 +40,16 @@ function MovieFavorite() {
       payload: {
         userFrom: currentUser._id,
         movieId: currentMovie.id,
+        movieTitle: currentMovie.title,
+        movieOriginalTitle: currentMovie.original_title,
+        movieRate: currentMovie.vote_average,
+        movieRuntime: currentMovie.runtime,
+        movieReleased: currentMovie.release_date,
+        moviePoster: currentMovie.poster_path,
+        movieImage: currentMovie.backdrop_path,
+        movieGenre: currentMovie.genres,
+        movieDescription: currentMovie.overview,
+        movieRate: currentMovie.vote_average,
       }
     })
   }
