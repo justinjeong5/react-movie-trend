@@ -16,10 +16,14 @@ const { TabPane } = Tabs;
 
 function MovieDetailPage(props) {
 
+  let movieDetailsPageFrontRef = React.createRef();
   const dispatch = useDispatch();
   const { currentMovie, loadMovieDetailDone, loadMovieTrailerDone, loadMovieTrailerLoading } = useSelector(state => state.movie)
 
   useEffect(() => {
+    if (movieDetailsPageFrontRef) {
+      movieDetailsPageFrontRef.scrollIntoView();
+    }
     dispatch({
       type: LOAD_MOVIE_DETAIL_REQUEST,
       payload: props.match.params.movieId
@@ -35,8 +39,10 @@ function MovieDetailPage(props) {
     }
   }, [loadMovieDetailDone])
 
+
   return (
     <div>
+      <div ref={node => (movieDetailsPageFrontRef = node)} />
       {loadMovieTrailerLoading && <LoadingPage />}
       {loadMovieTrailerDone && <>
         <MainImage movie={currentMovie} />
