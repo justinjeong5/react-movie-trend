@@ -56,4 +56,14 @@ router.post('/isFavorited', auth, (req, res) => {
     })
 })
 
+router.post('/favoritedList', auth, (req, res) => {
+  Favorite.find(req.body)
+    .exec((error, favorite) => {
+      if (error) {
+        return res.status(401).json({ code: 'DatabaseError', message: '좋아요를 변경하는 과정에서 문제가 발생했습니다.', error });
+      }
+      return res.status(200).json({ success: true, favoritedList: favorite })
+    })
+})
+
 module.exports = router
