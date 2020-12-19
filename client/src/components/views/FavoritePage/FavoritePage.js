@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { List, Space, Avatar, Typography, Divider, Card, Tooltip } from 'antd'
-import { StarOutlined, HeartOutlined, MessageOutlined } from '@ant-design/icons'
-import { LOAD_FAVORITED_LIST_REQUEST } from '../../../_sagas/types';
+import { List, Space, Avatar, Typography, Divider, Card, Tooltip, Tag } from 'antd'
+import { StarOutlined, MessageOutlined, HeartTwoTone } from '@ant-design/icons'
+import { LOAD_FAVORITED_LIST_REQUEST, CHANGE_FAVORITE_REQUEST } from '../../../_sagas/types';
 import LoadingPage from '../LoadingPage/LoadingPage';
 import { IMAGE_URL } from '../../../Config'
 
@@ -14,10 +14,10 @@ function FavoritePage() {
 
   const dispatch = useDispatch();
   const { currentUser } = useSelector(state => state.user)
-  const { favoritedList, loadFavoritedListLoading, loadFavoritedListDone } = useSelector(state => state.favorite)
+  const { favoritedList, loadFavoritedListLoading, loadFavoritedListDone, changeFavoriteDone, changeFavoriteLoading } = useSelector(state => state.favorite)
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser || changeFavoriteDone) {
       dispatch({
         type: LOAD_FAVORITED_LIST_REQUEST,
         payload: {
@@ -25,20 +25,32 @@ function FavoritePage() {
         }
       })
     }
-  }, [currentUser])
+  }, [currentUser, changeFavoriteDone])
 
   const IconText = ({ icon, text }) => (
     <Space>
-      {React.createElement(icon)}
+      {icon}
       {text}
     </Space>
   );
+
+  const handleFavorite = (movie) => () => {
+    console.log(movie, 'handleFavorite: movie')
+    console.log(movie.movieTitle, movie.id, 'handleFavorite: movie.movieTitle')
+    dispatch({
+      type: CHANGE_FAVORITE_REQUEST,
+      payload: {
+        userFrom: currentUser._id,
+        movieId: movie.movieId,
+      }
+    })
+  }
 
   return (
     <div style={{ width: '80%', margin: '1rem auto' }}>
       <Title level={2} style={{ margin: '5rem 0 auto' }} >내가 좋아하는 영화들</Title>
       <Divider />
-      {loadFavoritedListLoading && <LoadingPage />}
+      {(loadFavoritedListLoading || changeFavoriteLoading) && <LoadingPage />}
       {loadFavoritedListDone && <List
         itemLayout="vertical"
         size="large"
@@ -47,13 +59,10 @@ function FavoritePage() {
           <List.Item
             key={item.title}
             actions={[
-              <Tooltip title="영화 평점">
-                <IconText icon={StarOutlined} text={item.movieRate} key="list-vertical-star-o" />
-              </Tooltip>,
-              <IconText icon={HeartOutlined} text="56" key="list-vertical-like-o" />,
-              <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+              <IconText icon={<StarOutlined />} text={item.movieRate} key="list-vertical-star-o" />,
+              <IconText icon={<HeartTwoTone twoToneColor="#eb2f96" onClick={handleFavorite(item)} />} text="56" key="list-vertical-like-o" />,
+              <IconText icon={<MessageOutlined />} text="2" key="list-vertical-message" />,
             ]}
-
             extra={
               <Card
                 hoverable
